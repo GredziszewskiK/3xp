@@ -3,7 +3,6 @@ djangorestframework
 django-cors-headers
 django_heroku
 python-dotenv
-dj_sdatabase_url
-django_phonenumber_field
-django-phonenumber
+django-phonenumber-field
+django-phonenumbers
 djangorestframework-simplejwt

@@ -1,5 +1,10 @@
 import axios from "axios";
 import TokenService from "./token";
+
+
+axios.defaults.xsrfCookieName = 'csrftoken'
+axios.defaults.xsrfHeaderName = 'X-CSRFToken'
+
 const instance = axios.create({
   baseURL: "http://localhost:8000/",
   headers: {

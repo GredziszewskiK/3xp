@@ -34,7 +34,7 @@ SECRET_KEY = 'django-insecure-l@kf&_a^fp@%bfqk7ve^s%gyaag!u4_0i_1!5tjyctzb73y0s%
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [*]
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -68,7 +68,7 @@ MIDDLEWARE = [
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-ROOT_URLCONF = 'ppp.urls'
+ROOT_URLCONF = 'backend.urls'
 
 TEMPLATES = [
     {
@@ -86,7 +86,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'ppp.wsgi.application'
+WSGI_APPLICATION = 'backend.wsgi.application'
 
 
 # Database

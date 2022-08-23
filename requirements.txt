@@ -2,5 +2,7 @@ django
 djangorestframework
 django-cors-headers
 django_heroku
-dotenv
+python-dotenv
 dj_database_url
+django_phonenumber
+djangorestframework-simplejwt

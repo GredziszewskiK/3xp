@@ -11,6 +11,10 @@ from restapi.models import Project, Comment, User
 from restapi.permissions import IsOwnerOrReadOnly, IsUserOrReadOnly
 from restapi.serializers import ProjectSerializer, CommentSerializer, UserSerializer, LoginSerializer, RegisterSerializer, PasswordSerializer
 
+from django.views import View
+from django.http import HttpResponse, HttpResponseNotFound
+import os
+
 
 class LoginViewSet(viewsets.ModelViewSet, views.TokenObtainPairView):
     serializer_class = LoginSerializer

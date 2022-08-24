@@ -4,7 +4,7 @@ import Auth from "./auth"
 const getProfile = () => {
   const user = Auth.getCurrentUser();
   let userid = user ? user.id : ''
-  return api.get("/users/"+userid)
+  return api.get("/users/"+userid+'/')
   .then((response) =>{
     return response.data;
   });

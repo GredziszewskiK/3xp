@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 import AuthService from "../services/auth";
 import { UserContext } from '../services/context';
@@ -9,7 +9,7 @@ function Login() {
   const { authenticated, setAuthenticated, setUserName, setUserId } = useContext(UserContext)
   let navigate = useNavigate();
   React.useEffect(() => {
-    if (authenticated) {    
+    if (authenticated) {
       navigate('/');
     }
   }, [authenticated, navigate]); 
@@ -28,37 +28,71 @@ function Login() {
         navigate('/');
       },
       error => {
+        console.log(error)
         setAuthenticated(false);
-        setErrorMessages(error.response.data.detail);
+        setErrorMessages(error.message);
       }
     );
   };
 
   return (
-    <div className="col-md-12">    
-      <div className="card card-container">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" className="profile-img-card bi bi-person" viewBox="0 0 16 16">
-          <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
-        </svg>
-        <form onSubmit={handleSubmit}> 
-          {Object.keys(errorMessages).length > 0 && 
-            (<div className="alert alert-danger">{errorMessages}</div>)
-          }
-          <div className="mb-3">
-            <label htmlFor="email">Email</label>
-            <input type="text" className="form-control" name="email" required />
+    <section className="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
+      <div className="container">
+        <div className="row justify-content-center">
+          <div className="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
+
+            <div className="d-flex justify-content-center py-4">
+              <Link to={"/"} className="logo d-flex align-items-center w-auto">
+                <img src="cookie.png" alt="" />
+                <span className="d-none d-lg-block">3xP</span>
+              </Link>
+            </div>
+
+            <div className="card mb-3">
+              <div className="card-body">
+
+                <div className="pt-4 pb-2">
+                  <h5 className="card-title text-center pb-0 fs-4">Login to Your Account</h5>
+                  <p className="text-center small">Enter your email & password to login</p>
+                </div>       
+
+                {Object.keys(errorMessages).length > 0 && 
+                  (<div className="alert alert-danger">{errorMessages}</div>)
+                }
+
+                <form onSubmit={handleSubmit} className="row g-3 needs-validation" noValidate>
+                  
+                  <div className="col-12">
+                    <label htmlFor="email" className="form-label">Email</label>
+                    <div className="input-group has-validation">
+                      <input type="text" name="email" className="form-control" id="email" required />
+                      <div className="invalid-feedback">Please enter your username.</div>
+                    </div>
+                  </div>
+
+                  <div className="col-12">
+                    <label htmlFor="yourPassword" className="form-label">Password</label>
+                    <input type="password" name="password" className="form-control" id="yourPassword" required />
+                    <div className="invalid-feedback">Please enter your password!</div>
+                  </div>
+
+                  <div className="col-12">
+                    <button className="btn btn-primary w-100" type="submit">Login</button>
+                  </div>
+                  
+                  <div className="col-12">
+                    <p className="small mb-0">Don't have account? <Link to={"/register"}>Create an account</Link></p>
+                  </div>
+                
+                </form>
+
+              </div>
+            </div>
+
           </div>
-          <div className="mb-3">
-            <label htmlFor="password">Password</label>
-            <input type="password" className="form-control" name="password" required />
-          </div>
-          <div className="mb-3">
-            <button type="submit" className="btn btn-primary float-end">Log in</button>
-          </div>
-        </form>
+        </div>
       </div>
-    </div>
-    
+    </section>
   );
 }
 

@@ -8,7 +8,7 @@ import { FormContext } from "../services/context"
 
 function ProjectsCreate() {    
   const { register, formState: { errors }, handleSubmit, control, setValue} = useForm();  
-  const { setData, setType} = useContext(FormContext);
+  const { data, type, setData, setType} = useContext(FormContext);
   const [users_list, setUserList] = useState();
   
   
@@ -39,60 +39,83 @@ function ProjectsCreate() {
   };
 
   return (
-    <div className="container">
-      <h2>Create project</h2>
-      <hr/ >
-      <div className="card card-container">
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="mb-3">
-            <label htmlFor="name">Name</label>
-            <input {...register("name", { required: "Name is required" })} type="text" className="form-control" />
-            <p className="text-danger">{errors.name?.message}</p>
+    <div>
+      <main id="main" className="main">
+        <div className="pagetitle">
+          <h1>Projects</h1>
+        </div>
+        <div className="row">
+          <div className="col-xl-12">
+            <div className="card">
+              <div className="card-body">
+              <h5 class="card-title">New project</h5>
+              <form onSubmit={handleSubmit(onSubmit)}>
+                
+                <div className="row mb-3">
+                  <label htmlFor="email" className="col-md-4 col-lg-3 col-form-label">Email</label>
+                  <div className="col-md-8 col-lg-9">
+                    <input {...register("email", { required: "Email is required", })} type="text" className="form-control" />
+                    <p className="text-danger">{errors.email?.message}</p>
+                  </div>
+                </div>
+
+                <div className="row mb-3">
+                  <label htmlFor="name" className="col-md-4 col-lg-3 col-form-label">Name</label>
+                  <div className="col-md-8 col-lg-9">
+                    <input {...register("name", { required: "Name is required" })} type="text" className="form-control" />
+                    <p className="text-danger">{errors.name?.message}</p>
+                  </div>
+                </div>
+
+           <div className="mb-3">
+             <label htmlFor="description ">Description</label>
+             <textarea {...register("description", { required: "Description is required",})}  className="form-control" />
+             <p className="text-danger">{errors.description?.message}</p>
+           </div>
+           <div className="mb-3">
+               <label htmlFor="start_date">Start date</label>
+               <input {...register("start_date", { required:  "Select start date"})}  type="date" className="form-control"  />
+               <p className="text-danger">{errors.start_date?.message}</p>
+           </div>
+           <div className="mb-3">
+               <label htmlFor="end_date">End date</label>
+               <input {...register("end_date", { required:  "Select end date"})}  type="date" className="form-control"  />
+               <p className="text-danger">{errors.end_date?.message}</p>
+           </div>
+           <div className="mb-3">
+           <label htmlFor="selectuser">Select users</label>
+           <Controller
+             name="selectuser"
+             control={control}
+             rules={{ required: true }}
+             render={({ field: { ref, ...field } }) => {
+               return (
+                 <Multiselect
+                   {...field}
+                   inputRef={ref}
+                   displayValue="name"
+                   onSelect={(selected, item) => {
+                     setValue("selectuser", selected);
+                   }}
+                   onRemove={(selected, item) => {
+                     setValue("selectuser", selected);
+                   }}
+                   options={users_list}
+                 />
+               );
+             }}
+           />
+           </div>
+           <div className="mb-3">
+             <button type="submit" className="btn btn-primary float-end">Next</button>
+           </div>
+                
+              </form>  
+              </div>
+            </div>
           </div>
-          <div className="mb-3">
-            <label htmlFor="description ">Description</label>
-            <textarea {...register("description", { required: "Description is required",})}  className="form-control" />
-            <p className="text-danger">{errors.description?.message}</p>
-          </div>
-          <div className="mb-3">
-              <label htmlFor="start_date">Start date</label>
-              <input {...register("start_date", { required:  "Select start date"})}  type="date" className="form-control"  />
-              <p className="text-danger">{errors.start_date?.message}</p>
-          </div>
-          <div className="mb-3">
-              <label htmlFor="end_date">End date</label>
-              <input {...register("end_date", { required:  "Select end date"})}  type="date" className="form-control"  />
-              <p className="text-danger">{errors.end_date?.message}</p>
-          </div>
-          <div className="mb-3">
-          <label htmlFor="selectuser">Select users</label>
-          <Controller
-            name="selectuser"
-            control={control}
-            rules={{ required: true }}
-            render={({ field: { ref, ...field } }) => {
-              return (
-                <Multiselect
-                  {...field}
-                  inputRef={ref}
-                  displayValue="name"
-                  onSelect={(selected, item) => {
-                    setValue("selectuser", selected);
-                  }}
-                  onRemove={(selected, item) => {
-                    setValue("selectuser", selected);
-                  }}
-                  options={users_list}
-                />
-              );
-            }}
-          />
-          </div>
-          <div className="mb-3">
-            <button type="submit" className="btn btn-primary float-end">Next</button>
-          </div>
-        </form>
-      </div>
+        </div>
+      </main>
     </div>
   );
 }

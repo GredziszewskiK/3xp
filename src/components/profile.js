@@ -1,12 +1,17 @@
 import React, { useContext } from "react";
-import { Link } from "react-router-dom";
+import { Route, Routes, Link, useNavigate } from "react-router-dom";
 import { RainbowSpinner,} from "react-spinners-kit"
 
 import UserService from "../services/user";
 import { FormContext } from "../services/context";
+import ProfileOverview from "./profile.overview";
+import ProfileEdit from "./profile.edit";
+import ProfilePassword from "./profile.password";
+import ProfileCofirm from "./profile.confirm";
 
 function Profile() {
   const { data, setData, setType} = useContext(FormContext)
+  let navigate = useNavigate();
   React.useEffect(() => {
     UserService.getProfile().then(
       (data) => {
@@ -14,50 +19,66 @@ function Profile() {
         setType('profile');
       }
     );
+    navigate("/profile/overview");
   }, [setData, setType]);
 
   return (
-    <div className="container ">
-      <h2>Profile</h2>  
-      <hr/>  
-      {data ?
-      <div className="row justify-content-md-center">
-        <table className="table">
-          <tbody>
-            <tr>
-              <td>Email</td>
-              <td>{data.email}</td>
-            </tr>
-            <tr>
-              <td>Name</td>
-              <td>{data.name}</td>
-            </tr>
-            <tr>
-              <td>Lastname</td>
-              <td>{data.lastname}</td>
-            </tr>
-            <tr>
-              <td>Phone</td>
-              <td>{data.phone}</td>
-            </tr>
-            <tr>
-              <td>Age</td>
-              <td>{data.age}</td>
-            </tr>
-            <tr>
-              <td>Sex</td>
-              <td>{data.sex}</td>
-            </tr>
-          </tbody>
-        </table>
-        <Link to={"/profile/edit"} className="nav-link text-success">Edit</Link>
-        <Link to={"/profile/password"} className="nav-link text-success">Edit password</Link>
-      </div>
-      : 
-      <div className="spinner">  
-        <RainbowSpinner size={50} color="purple"  loading={true} />
-      </div>
-      }
+    <div>
+      <main id="main" className="main">
+        <div className="pagetitle">
+            <h1>Profile</h1>
+        </div>
+        {data ?
+        <section className="section profile">
+          <div className="row">
+
+            <div className="col-xl-4">
+              <div className="card">
+                <div className="card-body profile-card pt-4 d-flex flex-column align-items-center">
+                  <img src="/cm_icon.png" alt="Profile" />
+                  <h2>{data.name} {data.lastname}</h2>
+                  <h3>Your age: {data.age}</h3>
+                </div>
+              </div>
+            </div>
+
+            <div className="col-xl-8">
+              <div className="card">
+                <div className="card-body">
+                  <ul className="nav nav-tabs nav-tabs-bordered">
+
+                    <li className="nav-item">
+                      <Link className="nav-link" to={"/profile/overview"}>Overview</Link>
+                    </li>
+
+                    <li className="nav-item">
+                      <Link className="nav-link" to={"/profile/edit"}>Edit Profile</Link>
+                    </li>
+
+                    <li className="nav-item">
+                      <Link className="nav-link" to={"/profile/password"}>Change Password</Link>
+                    </li>
+
+                  </ul>
+                  <Routes>
+                      <Route path="/overview" element={<ProfileOverview/>}/>
+                      <Route path="/edit" element={<ProfileEdit/>}/>
+                      <Route path="/password" element={<ProfilePassword/>}/>
+                      <Route path="/edit/confirm" element={<ProfileCofirm />} />
+                  </Routes>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+        </section>
+        :
+        <div className="spinner">  
+          <RainbowSpinner size={50} color="purple"  loading={true} />
+        </div>
+        }
+      </main>
     </div>
   );
 };

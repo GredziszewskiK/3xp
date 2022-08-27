@@ -24,26 +24,27 @@ function ProfilePassword() {
   };
 
   return (
-    <div className="container">
-      <h2>Change password</h2>
-      <hr/ >
-      <div className="card card-container">      
-        <form onSubmit={handleSubmit(onSubmit)}>           
-          <div className="mb-3">
-            <label htmlFor="password">Password</label>
+    <div className="tab-pane fade show profile-overview" id="profile-overview">
+      <h5 className="card-title">Change password</h5>
+      <form onSubmit={handleSubmit(onSubmit)}>           
+        <div className="row mb-3">
+          <label htmlFor="password" className="col-md-4 col-lg-3 col-form-label">Password</label>
+          <div className="col-md-8 col-lg-9">
             <input {...register("password", {minLength: {value: 8, message: 'Password has at least 8 characters'}, required: "Password is required" })} type="password" className="form-control" />
             <p className="text-danger">{errors.password?.message}</p>
           </div>
-          <div className="mb-3">
-            <label htmlFor="repeat_password">Repeat password</label>
+        </div>
+        <div className="row mb-3">
+          <label htmlFor="repeat_password" className="col-md-4 col-lg-3 col-form-label">Repeat password</label>
+          <div className="col-md-8 col-lg-9">
             <input {...register("repeat_password", { required: "Repeat your password", validate: value => value === password.current || "The password do not match"})} type="password" className="form-control" />
             <p className="text-danger">{errors.repeat_password?.message}</p>
           </div>
-          <div className="mb-3">
-            <button type="submit" className="btn btn-primary float-end">Confirm</button>
-          </div>
-        </form>
-      </div>
+        </div>
+        <div className="mb-3">
+          <button type="submit" className="btn btn-primary float-end">Confirm</button>
+        </div>
+      </form>
     </div>
   );
 }

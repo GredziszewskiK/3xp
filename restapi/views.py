@@ -14,7 +14,7 @@ from restapi.serializers import ProjectSerializer, CommentSerializer, UserSerial
 
 from django.views import View
 from django.http import HttpResponse, HttpResponseNotFound
-import os
+import os, sys
 import datetime
 
 
@@ -25,6 +25,7 @@ class LoginViewSet(viewsets.ModelViewSet, views.TokenObtainPairView):
 
     def create(self, request, *args, **kwargs):
         print(request.data)
+        sys.stdout.flush()
         serializer = self.get_serializer(data=request.data)
 
         try:
@@ -41,6 +42,7 @@ class RegistrationViewSet(viewsets.ModelViewSet, views.TokenObtainPairView):
     http_method_names = ['post']
     def create(self, request, *args, **kwargs):
         print(request.data)
+        sys.stdout.flush()
         serializer = self.get_serializer(data=request.data)
 
         serializer.is_valid(raise_exception=True)

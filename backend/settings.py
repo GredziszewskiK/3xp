@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 import os
+from re import T
 import django_heroku
 import dotenv
 import dj_database_url
@@ -93,7 +94,7 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
 DATABASES = {}
-DATABASES['default'] = dj_database_url.config(conn_max_age=600)
+DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
 
 
 # Password validation
@@ -193,4 +194,4 @@ APPEND_SLASH=False
 django_heroku.settings(locals())
 
 options = DATABASES['default'].get('OPTIONS', {})
-options.pop('sslmode', None)
+# options.pop('sslmode', None)

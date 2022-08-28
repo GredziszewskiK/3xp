@@ -41,7 +41,7 @@ function ProfileEdit() {
               <label htmlFor="email" className="col-md-4 col-lg-3 col-form-label">Email</label>
               <div className="col-md-8 col-lg-9">
                 <input {...register("email", { required: "Email is required", value: data.email, validate: v=> vemail(v)})} type="text" className="form-control" />
-                <p className="text-danger">{errors.email?.message}</p>
+                <div className="text-danger">{errors.email?.message}</div>
               </div>
             </div>
 
@@ -49,7 +49,7 @@ function ProfileEdit() {
               <label htmlFor="name" className="col-md-4 col-lg-3 col-form-label">Name</label>
               <div className="col-md-8 col-lg-9">
                 <input {...register("name", { required: "Name is required", value: data.name })} type="text" className="form-control" />
-                <p className="text-danger">{errors.name?.message}</p>
+                <div className="text-danger">{errors.name?.message}</div>
               </div>
             </div>
 
@@ -57,7 +57,7 @@ function ProfileEdit() {
               <label htmlFor="lastname" className="col-md-4 col-lg-3 col-form-label">Lastname</label>
               <div className="col-md-8 col-lg-9">
                 <input {...register("lastname", { required: "Lastname is required", value: data.lastname })} type="text" className="form-control" />
-                <p className="text-danger">{errors.lastname?.message}</p>
+                <div className="text-danger">{errors.lastname?.message}</div>
               </div>
             </div>
 
@@ -65,7 +65,7 @@ function ProfileEdit() {
               <label htmlFor="dob" className="col-md-4 col-lg-3 col-form-label">Day of birth</label>
               <div className="col-md-8 col-lg-9">
                 <input {...register("dob", { required:  "Day of birth is required", value: data.dob})}  type="date" className="form-control"  />
-                <p className="text-danger">{errors.dob?.message}</p>
+                <div className="text-danger">{errors.dob?.message}</div>
               </div>
             </div>
 

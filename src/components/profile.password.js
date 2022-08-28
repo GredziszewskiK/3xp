@@ -31,14 +31,14 @@ function ProfilePassword() {
           <label htmlFor="password" className="col-md-4 col-lg-3 col-form-label">Password</label>
           <div className="col-md-8 col-lg-9">
             <input {...register("password", {minLength: {value: 8, message: 'Password has at least 8 characters'}, required: "Password is required" })} type="password" className="form-control" />
-            <p className="text-danger">{errors.password?.message}</p>
+            <div className="text-danger">{errors.password?.message}</div>
           </div>
         </div>
         <div className="row mb-3">
           <label htmlFor="repeat_password" className="col-md-4 col-lg-3 col-form-label">Repeat password</label>
           <div className="col-md-8 col-lg-9">
             <input {...register("repeat_password", { required: "Repeat your password", validate: value => value === password.current || "The password do not match"})} type="password" className="form-control" />
-            <p className="text-danger">{errors.repeat_password?.message}</p>
+            <div className="text-danger">{errors.repeat_password?.message}</div>
           </div>
         </div>
         <div className="mb-3">

@@ -8,6 +8,16 @@
       "type": "image/x-icon"
     },
     {
+      "src": "cm_icon.png",
+      "sizes": "128x128",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "cookie.png",
+      "sizes": "32x32",
+      "type": "image/x-icon"
+    },
+    {
       "src": "logo192.png",
       "type": "image/png",
       "sizes": "192x192"

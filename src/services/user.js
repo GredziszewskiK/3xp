@@ -25,12 +25,25 @@ const getProject = (id) => {
 };
 
 const craeteProject = (name, description, start_date, end_date, users_list) => {
-  console.log(users_list)
-  return api.post("/projects/", { name, description, start_date, end_date, users_list });
+  const comments_list = []
+  return api.post("/projects/", { name, description, start_date, end_date, users_list, comments_list });
 };
+
+const deleteProject = (id) => {
+  return api.delete("/projects/"+id+"/");
+}
+
+const editProject = (id, name, description, start_date, end_date, users_list) => {
+  const comments_list = []
+  return api.patch("/projects/"+id+"/", { name, description, start_date, end_date, users_list, comments_list });
+}
 
 const getUsers = () => {
   return api.get("/users/");
+};
+
+const addComment = (project, description) => {
+  return api.post("/projects/"+project+"/add_comment/", {description});
 };
 
 const UserService = {
@@ -40,5 +53,8 @@ const UserService = {
   getUsers,
   craeteProject,
   getProject,
+  deleteProject,
+  editProject,
+  addComment,
 };
 export default UserService;

@@ -6,7 +6,7 @@ import { Person, BoxArrowRight, Gear, List, Journal } from "react-bootstrap-icon
 
 
 function Nav() {
-  const  { username } = useContext(UserContext)
+  const  { user } = useContext(UserContext)
   const toggleNav = () => {
     const body = document.querySelector("body");
     body.classList.toggle('toggle-sidebar');
@@ -32,12 +32,12 @@ function Nav() {
 
               <a className="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
               <img src="/cm_icon.png" alt="Profile" />
-                <span className="d-none d-md-block dropdown-toggle ps-2">{username}</span>
+                <span className="d-none d-md-block dropdown-toggle ps-2">{user.name}</span>
               </a>
 
               <ul className="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
                 <li className="dropdown-header">
-                  <h6>{username}</h6>
+                  <h6>{user.name}</h6>
                 </li>
                 <li>
                   <hr className="dropdown-divider"/>

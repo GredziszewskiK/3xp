@@ -1,4 +1,5 @@
 from urllib import request
+from django.db.models import Q
 from rest_framework.decorators import action
 from rest_framework import permissions, viewsets, status
 from rest_framework.permissions import AllowAny
@@ -8,12 +9,13 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
 
 from restapi.models import Project, Comment, User
-from restapi.permissions import IsOwnerOrReadOnly, IsUserOrReadOnly
+from restapi.permissions import IsOwnerOrReadOnly, IsProjectUser
 from restapi.serializers import ProjectSerializer, CommentSerializer, UserSerializer, LoginSerializer, RegisterSerializer, PasswordSerializer
 
 from django.views import View
 from django.http import HttpResponse, HttpResponseNotFound
 import os
+import datetime
 
 
 class LoginViewSet(viewsets.ModelViewSet, views.TokenObtainPairView):
@@ -59,8 +61,6 @@ class RefreshViewSet(viewsets.ViewSet, views.TokenRefreshView):
     http_method_names = ['post']
 
     def create(self, request, *args, **kwargs):
-        print(request)
-        print(request.data)
         serializer = self.get_serializer(data=request.data)
 
         try:
@@ -72,15 +72,26 @@ class RefreshViewSet(viewsets.ViewSet, views.TokenRefreshView):
 
 
 class ProjectViewSet(viewsets.ModelViewSet):
-    permission_classes = (permissions.IsAuthenticated, IsOwnerOrReadOnly)
+    permission_classes = (permissions.IsAuthenticated, IsProjectUser)
     serializer_class = ProjectSerializer
     queryset = Project.objects.all()
+
+    @action(detail=True, methods=['post'])
+    def add_comment(self, request, pk=None):
+        project = self.get_object()
+        owner = request.user
+        content = request.data['description']
+        comment = Comment(project=project, owner=owner, created=datetime.datetime.now(), content=content)
+        comment.save()
+        queryset = Project.objects.get(id=project.id)
+        serializer = ProjectSerializer(queryset)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
 
     def list(self, request, *args, **kwargs):
-        queryset = Project.objects.all().filter(owner=self.request.user)
+        queryset = Project.objects.filter(Q(owner=request.user.id) | Q(users__user=request.user.id)).distinct()
         serializer = ProjectSerializer(queryset, many=True)
         return Response(serializer.data)
 
@@ -95,7 +106,7 @@ class CommentViewSet(viewsets.ModelViewSet):
 
 
 class UserViewSet(viewsets.ModelViewSet):
-    permission_classes = (permissions.IsAuthenticated, IsUserOrReadOnly)
+    permission_classes = (permissions.IsAuthenticated, IsOwnerOrReadOnly)
     queryset = User.objects.all()
     serializer_class = UserSerializer   
 

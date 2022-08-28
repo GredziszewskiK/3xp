@@ -1,7 +1,9 @@
 import { createContext } from 'react';
 
 const UserContext = createContext();
-const FormContext = createContext();
+const ProfileContext = createContext();
+const ProjectContext = createContext();
+const CommentContext = createContext();
 
 
-export {UserContext, FormContext}
+export {UserContext, ProfileContext, ProjectContext, CommentContext}

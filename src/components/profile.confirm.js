@@ -1,67 +1,72 @@
 import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { RainbowSpinner,} from "react-spinners-kit"
+import { RainbowSpinner,} from "react-spinners-kit";
 
-import { FormContext } from "../services/context";
+import { ProfileContext, UserContext } from "../services/context";
 import UserService from "../services/user";
 
 
 function ProfileCofirm() {
-  const { data, setData, type, setType } = useContext(FormContext)
+  const { profile, setProfile } = useContext(ProfileContext)
+  const { setUser } = useContext(UserContext)
   let navigate = useNavigate();
 
   React.useEffect(() => {
-    if (!data || type !== 'profile') {
+    if (!profile) {
       navigate('/profile/overview');
     };
-  }, [data, type, navigate]);
+  }, [profile, navigate]);
 
   function submit() {
-    const phone = data.phone ? data.phone : null
-    UserService.editUser(data.email, data.name, data.lastname, data.sex, phone, data.dob);
-    navigate('/profile/overview')
+    const phone = profile.phone ? profile.phone : null;
+    UserService.editUser(profile.email, profile.name, profile.lastname, profile.sex, phone, profile.dob).then(
+      (data) => {
+        setUser({name: data.data.name, lastname: data.data.lastname, age: data.data.age});
+        navigate('/profile/overview');
+      }
+    );    
   };  
 
   function cancel() {
-    setType(null);
+    setProfile(null);
     navigate('/profile/overview');
   }  
 
   return (
     <div>
-    {data ?        
+    {profile ?        
       <div className="tab-pane fade show profile-overview" id="profile-overview">
 
         <h5 className="card-title">Confirm profile edit</h5>
 
         <div className="row">
           <div className="col-lg-3 col-md-4 label ">Email</div>
-          <div className="col-lg-9 col-md-8">{data.email}</div>
+          <div className="col-lg-9 col-md-8">{profile.email}</div>
         </div>  
 
         <div className="row">
           <div className="col-lg-3 col-md-4 label ">Name</div>
-          <div className="col-lg-9 col-md-8">{data.name}</div>
+          <div className="col-lg-9 col-md-8">{profile.name}</div>
         </div>
 
         <div className="row">
           <div className="col-lg-3 col-md-4 label ">Lastname</div>
-          <div className="col-lg-9 col-md-8">{data.lastname}</div>
+          <div className="col-lg-9 col-md-8">{profile.lastname}</div>
         </div>
 
         <div className="row">
           <div className="col-lg-3 col-md-4 label ">Sex</div>
-          <div className="col-lg-9 col-md-8">{data.sex}</div>
+          <div className="col-lg-9 col-md-8">{profile.sex}</div>
         </div>
 
         <div className="row">
           <div className="col-lg-3 col-md-4 label ">phone</div>
-          <div className="col-lg-9 col-md-8">{data.phone}</div>
+          <div className="col-lg-9 col-md-8">{profile.phone}</div>
         </div>
 
         <div className="row">
           <div className="col-lg-3 col-md-4 label ">Day of Birth</div>
-          <div className="col-lg-9 col-md-8">{data.dob}</div>
+          <div className="col-lg-9 col-md-8">{profile.dob}</div>
         </div>
 
         <div className="mb-3">

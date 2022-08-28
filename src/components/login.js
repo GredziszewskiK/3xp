@@ -6,7 +6,7 @@ import { UserContext } from '../services/context';
 
 function Login() {
   const [errorMessages, setErrorMessages] = useState({});
-  const { authenticated, setAuthenticated, setUserName, setUserId } = useContext(UserContext)
+  const { authenticated, setAuthenticated, setUser, setUserId } = useContext(UserContext)
   let navigate = useNavigate();
   React.useEffect(() => {
     if (authenticated) {
@@ -22,7 +22,7 @@ function Login() {
     AuthService.login(email.value, password.value).then(
       () => {
         const user = AuthService.getCurrentUser();
-        setUserName(user.name);
+        setUser({name: user.name, lastname: user.lastname, age: user.age});
         setUserId(user.id);
         setAuthenticated(true);
         navigate('/');

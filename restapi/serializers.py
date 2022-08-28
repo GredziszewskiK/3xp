@@ -10,11 +10,12 @@ from rest_framework_simplejwt.settings import api_settings
 class ProjectSerializer(serializers.ModelSerializer):
     owner = serializers.ReadOnlyField(source='owner.username')
     users_list = serializers.ListField()
+    comments_list = serializers.ListField()
 
     class Meta:
         model = Project
         fields = ('id', 'owner', 'name', 'start_date',
-                  'end_date', 'description', 'state', 'users_list')
+                  'end_date', 'description', 'state', 'users_list', 'comments_list')
 
     def create(self, valid_data):
         project = Project(
@@ -36,8 +37,20 @@ class ProjectSerializer(serializers.ModelSerializer):
         return project
 
     def update(self, instance,  valid_data):
-        print('UPDATE PROJECT', valid_data)
-        print('UPDATE PROJECT', instance)
+        instance.name = valid_data['name']
+        instance.start_date = valid_data['start_date']
+        instance.end_date = valid_data['end_date']
+        instance.description = valid_data['description']
+        instance.save()      
+        ProjectUser.objects.filter(project=instance).delete()
+        for user in valid_data['users_list']:
+            u = User.objects.get(pk=user.get('value'))
+            project_user = ProjectUser(
+                user=u,
+                project=instance
+            )
+            project_user.save()
+        return instance
 
 class CommentSerializer(serializers.HyperlinkedModelSerializer):
     owner = serializers.ReadOnlyField(source='owner.username')

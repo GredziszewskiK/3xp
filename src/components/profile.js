@@ -1,26 +1,25 @@
-import React, { useContext } from "react";
-import { Route, Routes, Link, useNavigate } from "react-router-dom";
-import { RainbowSpinner,} from "react-spinners-kit"
+import React, { useContext, useState } from "react";
+import { Route, Routes, Link, useNavigate, useLocation } from "react-router-dom";
+import { RainbowSpinner,} from "react-spinners-kit";
 
-import UserService from "../services/user";
-import { FormContext } from "../services/context";
+
+import { UserContext, ProfileContext } from "../services/context";
 import ProfileOverview from "./profile.overview";
 import ProfileEdit from "./profile.edit";
 import ProfilePassword from "./profile.password";
 import ProfileCofirm from "./profile.confirm";
 
 function Profile() {
-  const { data, setData, setType} = useContext(FormContext)
+  const { user } = useContext(UserContext);
+  const [profile, setProfile] = useState();
   let navigate = useNavigate();
+  let url = useLocation();
+
   React.useEffect(() => {
-    UserService.getProfile().then(
-      (data) => {
-        setData(data);
-        setType('profile');
-      }
-    );
-    navigate("/profile/overview");
-  }, [setData, setType]);
+    if (url.pathname === '/profile' || url.pathname === '/profile/') {
+      navigate("/profile/overview");
+    }
+  }, [url, navigate]);
 
   return (
     <div>
@@ -28,7 +27,7 @@ function Profile() {
         <div className="pagetitle">
             <h1>Profile</h1>
         </div>
-        {data ?
+        {user ?
         <section className="section profile">
           <div className="row">
 
@@ -36,8 +35,8 @@ function Profile() {
               <div className="card">
                 <div className="card-body profile-card pt-4 d-flex flex-column align-items-center">
                   <img src="/cm_icon.png" alt="Profile" />
-                  <h2>{data.name} {data.lastname}</h2>
-                  <h3>Your age: {data.age}</h3>
+                  <h2>{user.name} {user.lastname}</h2>
+                  <h3>Your age: {user.age}</h3>
                 </div>
               </div>
             </div>
@@ -60,12 +59,14 @@ function Profile() {
                     </li>
 
                   </ul>
-                  <Routes>
-                      <Route path="/overview" element={<ProfileOverview/>}/>
-                      <Route path="/edit" element={<ProfileEdit/>}/>
-                      <Route path="/password" element={<ProfilePassword/>}/>
-                      <Route path="/edit/confirm" element={<ProfileCofirm />} />
-                  </Routes>
+                    <ProfileContext.Provider value={{profile, setProfile}}> 
+                      <Routes>
+                          <Route path="/overview" element={<ProfileOverview/>}/>
+                          <Route path="/edit" element={<ProfileEdit/>}/>
+                          <Route path="/password" element={<ProfilePassword/>}/>
+                          <Route path="/edit/confirm" element={<ProfileCofirm />} />
+                      </Routes>
+                    </ProfileContext.Provider>
                 </div>
 
               </div>

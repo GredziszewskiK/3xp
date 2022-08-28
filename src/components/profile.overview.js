@@ -1,21 +1,17 @@
-import React, { useContext } from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
 import { RainbowSpinner,} from "react-spinners-kit"
-import { Person } from "react-bootstrap-icons";
 
 import UserService from "../services/user";
-import { FormContext } from "../services/context";
 
 function ProfileOverview() {
-  const { data, setData, setType} = useContext(FormContext)
+  const [data, setData] = useState()
   React.useEffect(() => {
     UserService.getProfile().then(
       (data) => {
         setData(data);
-        setType('profile');
       }
     );
-  }, [setData, setType]);
+  }, [setData]);
 
   return (
     <div>

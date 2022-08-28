@@ -100,8 +100,8 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 class Project(models.Model):
     created = models.DateTimeField(auto_now_add=True)
-    start_date = models.DateTimeField()
-    end_date = models.DateTimeField()
+    start_date = models.DateField()
+    end_date = models.DateField()
     state = models.CharField(choices=STATE_CHOICES, default='NEW', max_length=50)
     name = models.CharField(max_length=100)
     description = models.TextField()
@@ -120,6 +120,20 @@ class Project(models.Model):
         for user in users:
             users_list.append({'value': user.user.id, 'name': ' '.join([user.user.name, user.user.lastname])})
         return users_list
+
+    @property
+    def comments_list(self):        
+        comments = Comment.objects.all().filter(project__id=self.id)
+        comments_list = []
+        for comment in comments:
+            comments_list.append({
+                    'content': comment.content, 
+                    'owner_id': comment.owner.id, 
+                    'owner_name': ' '.join([comment.owner.name, comment.owner.lastname]),
+                    'project_owner_id': comment.project.owner.id,
+                    'created': comment.created
+                })
+        return comments_list
 
 
 class Comment(models.Model):

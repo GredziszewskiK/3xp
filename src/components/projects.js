@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { RainbowSpinner,} from "react-spinners-kit"
 import { Plus, Pencil, Trash, SearchHeart } from "react-bootstrap-icons";
+import Moment from 'moment';
 
 import UserService from "../services/user";
 
@@ -27,7 +28,7 @@ function Projects() {
           <div className="col-xl-12">
             <div className="card">
               <div className="card-body">
-                <h5 className="card-title"><Link to={"/projects/create"} className="nav-link">Create project<Plus /></Link></h5>
+                <h5 className="card-title"><Link to={"/project/create"} className="nav-link">Create project<Plus /></Link></h5>
                 <table className="table">
                   <thead>
                     <tr>
@@ -46,13 +47,13 @@ function Projects() {
                       <tr key={key}>
                         <td>{val.id}</td>
                         <td>{val.name}</td>
-                        <td>{val.start_date}</td>
-                        <td>{val.end_date}</td>
+                        <td>{Moment(val.start_date).format("DD.MM.YYYY")}</td>
+                        <td>{Moment(val.enddate).format("DD.MM.YYYY")}</td>
                         <td>{val.state}</td>
                         <td>
-                        <Link to={"/projects/details/"+val.id} className="nav-link"><SearchHeart /></Link>
-                        <Link to={"/projects/edit/"+val.id} className="nav-link"><Pencil /></Link>
-                        <Link to={"/projects/delete/"+val.id} className="nav-link"><Trash /></Link>
+                        <Link to={"/project/details/"+val.id} className="nav-link"><SearchHeart /></Link>
+                        <Link to={"/project/edit/"+val.id} className="nav-link"><Pencil /></Link>
+                        <Link to={"/project/delete/"+val.id} className="nav-link"><Trash /></Link>
                         </td>
                       </tr>
                       )

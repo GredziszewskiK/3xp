@@ -190,4 +190,4 @@ APPEND_SLASH=False
 django_heroku.settings(locals())
 
 options = DATABASES['default'].get('OPTIONS', {})
-# options.pop('sslmode', None)
+options.pop('sslmode', None)

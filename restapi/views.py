@@ -24,8 +24,6 @@ class LoginViewSet(viewsets.ModelViewSet, views.TokenObtainPairView):
     http_method_names = ['post']
 
     def create(self, request, *args, **kwargs):
-        print(request.data)
-        sys.stdout.flush()
         serializer = self.get_serializer(data=request.data)
 
         try:
@@ -41,8 +39,6 @@ class RegistrationViewSet(viewsets.ModelViewSet, views.TokenObtainPairView):
     permission_classes = (AllowAny,)
     http_method_names = ['post']
     def create(self, request, *args, **kwargs):
-        print(request.data)
-        sys.stdout.flush()
         serializer = self.get_serializer(data=request.data)
 
         serializer.is_valid(raise_exception=True)

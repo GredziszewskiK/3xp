@@ -187,7 +187,7 @@ SIMPLE_JWT = {
 APPEND_SLASH=False
 
 #heroku
-django_heroku.settings(locals())
+# django_heroku.settings(locals())
 
-options = DATABASES['default'].get('OPTIONS', {})
+# options = DATABASES['default'].get('OPTIONS', {})
 # options.pop('sslmode', None)

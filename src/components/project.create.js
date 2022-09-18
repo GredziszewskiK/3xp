@@ -16,7 +16,7 @@ const venddate = (end_date, start_date) => {
 function ProjectCreate() {    
   const { register, formState: { errors }, handleSubmit, control, setValue, watch} = useForm();  
   const { project, setProject} = useContext(ProjectContext);
-  const [users_list, setUserList] = useState();  
+  const [users_options, setUsersOptions] = useState();
   let navigate = useNavigate();
 
   const start_date = useRef({});
@@ -31,10 +31,10 @@ function ProjectCreate() {
           let value = data.data[i].id;
           usersList.push({name: name, value: value})
         }
-        setUserList(usersList);
+        setUsersOptions(usersList);
       }
     );
-  }, []);
+  }, [setUsersOptions]);
 
   const onSubmit = data => {
     setProject(data);
@@ -43,7 +43,7 @@ function ProjectCreate() {
 
   return (
     <div>
-      {users_list ?
+      {users_options ?
         <div className="row">
           <div className="col-xl-12">
             <div className="card">
@@ -86,31 +86,32 @@ function ProjectCreate() {
                     </div>
 
                     <div className="row mb-3">
-                      <label htmlFor="selectuser" className="col-md-4 col-lg-3 col-form-label">Select users</label>
+                      <label htmlFor="users_list" className="col-md-4 col-lg-3 col-form-label">Select users</label>
                       <div className="col-md-8 col-lg-9">
                         <Controller
-                          name="selectuser"
+                          name="users_list"
                           control={control}
                           rules={{ required: "Select users" }}
+                          defaultValue={project ? project.users_list : []}
                           render={({ field: { ref, ...field } }) => {
                             return (
                               <Multiselect
                                 {...field}
-                                options={users_list}
-                                selectedValues={users_list.map(ele => ele)}
+                                options={users_options}
+                                selectedValues={project ? project.users_list : []}
                                 inputRef={ref}
                                 displayValue="name"
                                 onSelect={(selected, item) => {
-                                  setValue("selectuser", selected);
+                                  setValue("users_list", selected);
                                 }}
                                 onRemove={(selected, item) => {
-                                  setValue("selectuser", selected);
+                                  setValue("users_list", selected);
                                 }}
                               />
                             );
                           }}
                         />
-                        <div className="text-danger">{errors.selectuser?.message}</div>
+                        <div className="text-danger">{errors.users_list?.message}</div>
                       </div>
                     </div>
 

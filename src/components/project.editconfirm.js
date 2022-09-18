@@ -67,7 +67,7 @@ function ProjectEditConfirm() {
                     <div className="col-lg-3 col-md-4 label ">Users</div>
                     <div className="col-lg-9 col-md-8">
                     {
-                      project.selectuser.map((val, key) => {
+                      project.users_list.map((val, key) => {
                         return (
                         <p key={key}>{val.name}</p>
                         )

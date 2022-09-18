@@ -8,7 +8,6 @@ import UserService from "../services/user";
 import { ProjectContext } from "../services/context"
 
 const venddate = (end_date, start_date) => {
-  console.log(start_date, end_date)
   if (start_date > end_date) {
     return "End date cannot be before start date."
   }
@@ -18,11 +17,12 @@ function ProjectEdit() {
   let { id } = useParams();
   const { register, formState: { errors }, handleSubmit, control, setValue, watch} = useForm();  
   const { project, setProject} = useContext(ProjectContext);
-  const [users_list, setUserList] = useState();  
+  const [users_options, setUsersOptions] = useState();  
   let navigate = useNavigate();
 
   const start_date = useRef({});
   start_date.current = watch("start_date", project ? project.start_date : "");
+  console.log(project)
 
   React.useEffect(() => {
     const usersList = [];
@@ -33,15 +33,17 @@ function ProjectEdit() {
           let value = data.data[i].id;
           usersList.push({name: name, value: value})
         }
-        setUserList(usersList);
+        setUsersOptions(usersList);
       }
     );
-    UserService.getProject(id).then(
+    if (!project){
+      UserService.getProject(id).then(
         (data) => {
           setProject(data.data);
         }
       );
-  }, [id, setProject, setUserList]);
+    }
+  }, [id, setProject, setUsersOptions]);
 
   const onSubmit = data => {
     setProject(data);
@@ -50,13 +52,13 @@ function ProjectEdit() {
 
   return (
     <div>
-      {(users_list && project) ?
+      {(users_options && project) ?
         <div className="row">
           <div className="col-xl-12">
             <div className="card">
               <div className="card-body">
                 <div className="tab-pane fade show profile-overview">
-                  <h5 className="card-title">New project</h5>
+                  <h5 className="card-title">Edit project</h5>
 
                   <form onSubmit={handleSubmit(onSubmit)}>
 
@@ -93,31 +95,32 @@ function ProjectEdit() {
                     </div>
 
                     <div className="row mb-3">
-                      <label htmlFor="selectuser" className="col-md-4 col-lg-3 col-form-label">Select users</label>
+                      <label htmlFor="users_list" className="col-md-4 col-lg-3 col-form-label">Select users</label>
                       <div className="col-md-8 col-lg-9">
                         <Controller
-                          name="selectuser"
+                          name="users_list"
                           control={control}
                           rules={{ required: "Select users" }}
+                          defaultValue={project.users_list}
                           render={({ field: { ref, ...field } }) => {
                             return (
                               <Multiselect
                                 {...field}
-                                options={users_list}
-                                selectedValues={users_list} //Prawidłowo pokazuje ale wartość formularza się niezmienia
+                                options={users_options}
+                                selectedValues={project.users_list}
                                 inputRef={ref}
                                 displayValue="name"
                                 onSelect={(selected, item) => {
-                                  setValue("selectuser", selected);
+                                  setValue("users_list", selected);
                                 }}
                                 onRemove={(selected, item) => {
-                                  setValue("selectuser", selected);
+                                  setValue("users_list", selected);
                                 }}
                               />
                             );
                           }}
                         />
-                        <div className="text-danger">{errors.selectuser?.message}</div>
+                        <div className="text-danger">{errors.users_list?.message}</div>
                       </div>
                     </div>
 

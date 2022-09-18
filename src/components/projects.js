@@ -12,7 +12,6 @@ function Projects() {
   React.useEffect(() => {
     UserService.getProjects().then(
       (x) => {
-        console.log(x)
         setData(x.data);
       }
     );

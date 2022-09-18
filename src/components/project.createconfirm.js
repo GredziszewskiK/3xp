@@ -18,7 +18,7 @@ function ProjectCreateCofirm() {
   }, [project, navigate]);
 
   function submit() {
-    UserService.craeteProject(project.name, project.description, project.start_date, project.end_date, project.selectuser)
+    UserService.craeteProject(project.name, project.description, project.start_date, project.end_date, project.users_list)
     .then(
       (data) =>{
         navigate('/projects')

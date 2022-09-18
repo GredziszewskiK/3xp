@@ -19,7 +19,7 @@ function ProjectEditConfirm() {
   }, [project, navigate]);
 
   function submit() {
-    UserService.editProject(id, project.name, project.description, project.start_date, project.end_date, project.selectuser)
+    UserService.editProject(id, project.name, project.description, project.start_date, project.end_date, project.users_list)
     .then(
       (data) =>{
         navigate('/projects')

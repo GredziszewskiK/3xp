@@ -7,7 +7,7 @@ import { ProjectContext } from "../services/context";
 import UserService from "../services/user";
 
 
-function ProjectCreateCofirm() {
+function ProjectEditConfirm() {
   let { id } = useParams();
   const { project } = useContext(ProjectContext)
   let navigate = useNavigate();
@@ -41,7 +41,7 @@ function ProjectCreateCofirm() {
               <div className="tab-pane fade show profile-overview">      
                 <div className="tab-pane fade show profile-overview" id="profile-overview">
 
-                  <h5 className="card-title">Confirm profile edit</h5>
+                  <h5 className="card-title">Confirm project edit</h5>
 
                   <div className="row">
                     <div className="col-lg-3 col-md-4 label ">Name</div>
@@ -96,4 +96,4 @@ function ProjectCreateCofirm() {
   )
 };
 
-export default ProjectCreateCofirm
+export default ProjectEditConfirm

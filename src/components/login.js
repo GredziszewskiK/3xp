@@ -30,7 +30,11 @@ function Login() {
       error => {
         console.log(error)
         setAuthenticated(false);
-        setErrorMessages(error.message);
+        let message = error.message
+        if(error.response.status === 401){
+          message = error.response.data.detail
+        }
+        setErrorMessages(message);
       }
     );
   };

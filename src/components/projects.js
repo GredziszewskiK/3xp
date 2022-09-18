@@ -12,6 +12,7 @@ function Projects() {
   React.useEffect(() => {
     UserService.getProjects().then(
       (x) => {
+        console.log(x)
         setData(x.data);
       }
     );
@@ -48,7 +49,7 @@ function Projects() {
                         <td>{val.id}</td>
                         <td>{val.name}</td>
                         <td>{Moment(val.start_date).format("DD.MM.YYYY")}</td>
-                        <td>{Moment(val.enddate).format("DD.MM.YYYY")}</td>
+                        <td>{Moment(val.end_date).format("DD.MM.YYYY")}</td>
                         <td>{val.state}</td>
                         <td>
                         <Link to={"/project/details/"+val.id} className="nav-link"><SearchHeart /></Link>

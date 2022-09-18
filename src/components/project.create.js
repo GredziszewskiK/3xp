@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm, Controller } from "react-hook-form";
 import Multiselect from "multiselect-react-dropdown";
@@ -7,12 +7,20 @@ import { RainbowSpinner,} from "react-spinners-kit"
 import UserService from "../services/user";
 import { ProjectContext } from "../services/context"
 
+const venddate = (end_date, start_date) => {
+  if (start_date > end_date) {
+    return "End date cannot be before start date."
+  }
+};
 
 function ProjectCreate() {    
-  const { register, formState: { errors }, handleSubmit, control, setValue} = useForm();  
+  const { register, formState: { errors }, handleSubmit, control, setValue, watch} = useForm();  
   const { project, setProject} = useContext(ProjectContext);
   const [users_list, setUserList] = useState();  
   let navigate = useNavigate();
+
+  const start_date = useRef({});
+  start_date.current = watch("start_date", project ? project.start_date : "");
 
   React.useEffect(() => {
     const usersList = [];
@@ -72,7 +80,7 @@ function ProjectCreate() {
                     <div className="row mb-3">
                       <label htmlFor="end_date" className="col-md-4 col-lg-3 col-form-label">End date</label>
                       <div className="col-md-8 col-lg-9">
-                        <input {...register("end_date", { required:  "Select end date", value: project ? project.end_date : null})}  type="date" className="form-control"  />
+                        <input {...register("end_date", { required:  "Select end date", value: project ? project.end_date : null, validate: value => venddate(value, start_date.current ? start_date.current : project.start_date) })}  type="date" className="form-control"  />
                         <div className="text-danger">{errors.end_date?.message}</div>
                       </div>
                     </div>
@@ -89,7 +97,7 @@ function ProjectCreate() {
                               <Multiselect
                                 {...field}
                                 options={users_list}
-                                // selectedValues={users_list} //Prawidłowo pokazuje ale wartość formularza się niezmienia
+                                selectedValues={users_list.map(ele => ele)}
                                 inputRef={ref}
                                 displayValue="name"
                                 onSelect={(selected, item) => {

@@ -17,4 +17,4 @@ class IsProjectUser(permissions.BasePermission):
         users = ProjectUser.objects.filter(project=obj.id).values('user')   
         users = [user['user'] for user in users]
 
-        return obj.owner == request.user.id or request.user.id in users
+        return obj.owner == request.user or request.user.id in users

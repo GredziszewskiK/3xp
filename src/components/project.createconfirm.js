@@ -32,56 +32,65 @@ function ProjectCreateCofirm() {
 
   return (
     <div>
-    {project ?        
-      <div className="tab-pane fade show profile-overview" id="profile-overview">
+    {project ?      
+      <div className="row">
+        <div className="col-xl-12">
+          <div className="card">
+            <div className="card-body">  
+              <div className="tab-pane fade show profile-overview" id="profile-overview">
 
-        <h5 className="card-title">Confirm profile edit</h5>
+                <h5 className="card-title">Confirm create project</h5>
 
-        <div className="row">
-          <div className="col-lg-3 col-md-4 label ">Name</div>
-          <div className="col-lg-9 col-md-8">{project.name}</div>
-        </div>  
+                <div className="row">
+                  <div className="col-lg-3 col-md-4 label ">Name</div>
+                  <div className="col-lg-9 col-md-8">{project.name}</div>
+                </div>  
 
-        <div className="row">
-          <div className="col-lg-3 col-md-4 label ">Description</div>
-          <div className="col-lg-9 col-md-8">{project.description}</div>
-        </div>
+                <div className="row">
+                  <div className="col-lg-3 col-md-4 label ">Description</div>
+                  <div className="col-lg-9 col-md-8">{project.description}</div>
+                </div>
 
-        <div className="row">
-          <div className="col-lg-3 col-md-4 label ">Start date</div>
-          <div className="col-lg-9 col-md-8">{Moment(project.start_date).format("DD.MM.YYYY")}</div>
-        </div>
+                <div className="row">
+                  <div className="col-lg-3 col-md-4 label ">Start date</div>
+                  <div className="col-lg-9 col-md-8">{Moment(project.start_date).format("DD.MM.YYYY")}</div>
+                </div>
 
-        <div className="row">
-          <div className="col-lg-3 col-md-4 label ">End date</div>
-          <div className="col-lg-9 col-md-8">{Moment(project.end_date).format("DD.MM.YYYY")}</div>
-        </div>
+                <div className="row">
+                  <div className="col-lg-3 col-md-4 label ">End date</div>
+                  <div className="col-lg-9 col-md-8">{Moment(project.end_date).format("DD.MM.YYYY")}</div>
+                </div>
 
-        <div className="row">
-          <div className="col-lg-3 col-md-4 label ">Users</div>
-          <div className="col-lg-9 col-md-8">
-          {
-            project.selectuser.map((val, key) => {
-              return (
-              <p key={key}>{val.name}</p>
-              )
-            })
-          } 
+                <div className="row">
+                  <div className="col-lg-3 col-md-4 label ">Users</div>
+                  <div className="col-lg-9 col-md-8">
+                  {
+                    project.selectuser.map((val, key) => {
+                      return (
+                      <p key={key}>{val.name}</p>
+                      )
+                    })
+                  } 
+                  </div>
+                </div>        
+
+                <div className="mb-3">
+                  <button onClick={() => navigate(-1)} className="btn btn-primary float-start">Back</button>
+                  <button onClick={() => cancel()} className="btn btn-primary float-start">Cancel</button>
+                  <button onClick={() => submit()} className="btn btn-primary float-end">Commit</button>
+                </div>
+                
+              </div>
+            </div>
           </div>
-        </div>        
-
-        <div className="mb-3">
-           <button onClick={() => navigate(-1)} className="btn btn-primary float-start">Back</button>
-           <button onClick={() => cancel()} className="btn btn-primary float-start">Cancel</button>
-           <button onClick={() => submit()} className="btn btn-primary float-end">Commit</button>
-         </div>
+        </div>
       </div>
-  :
-    <div className="spinner">  
-      <RainbowSpinner size={50} color="purple"  loading={true} />
+    :
+      <div className="spinner">  
+        <RainbowSpinner size={50} color="purple"  loading={true} />
+      </div>
+    }
     </div>
-  }
-  </div>
   )
 };
 

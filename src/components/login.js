@@ -28,7 +28,6 @@ function Login() {
         navigate('/');
       },
       error => {
-        console.log(error)
         setAuthenticated(false);
         let message = error.message
         if(error.response.status === 401){

@@ -27,7 +27,7 @@ function ProjectCreate() {
     UserService.getUsers().then(
       (data) => {
         for(let i=0; i < data.data.length; i++){
-          let name = `${data.data[i].name} ${data.data[i].lastname}`;
+          let name = `${data.data[i].id} ${data.data[i].name} ${data.data[i].lastname}`;
           let value = data.data[i].id;
           usersList.push({name: name, value: value})
         }
@@ -56,7 +56,7 @@ function ProjectCreate() {
                     <div className="row mb-3">
                       <label htmlFor="name" className="col-md-4 col-lg-3 col-form-label">Name</label>
                       <div className="col-md-8 col-lg-9">
-                        <input {...register("name", { required: "Name is required", value: project ? project.name : null})} type="text" className="form-control" />
+                        <input {...register("name", { required: "Name is required", value: project ? project.name : null, maxLength: {value: 100, message: 'Max 100 characters'} })} type="text" className="form-control" />
                         <div className="text-danger">{errors.name?.message}</div>
                       </div>
                     </div>

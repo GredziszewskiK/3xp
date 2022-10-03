@@ -6,7 +6,7 @@ from phonenumber_field.modelfields import PhoneNumberField
 
 STATE_CHOICES = (('NEW', 'New'), ('OPEN', 'Open'), ('CLOSE', 'Close'))
 USER_TYPE_CHOICES = (('OWNER', 'Owner'), ('WORKER', 'Worker'))
-SEX_CHOICES = (('MALE', 'Male'), ('FAMALE', 'Famale'))
+SEX_CHOICES = (('MALE', 'Male'), ('FEMALE', 'Female'))
 
 class UserManager(BaseUserManager):
 
@@ -68,8 +68,8 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(db_index=True, unique=True,  null=True, blank=True)
-    name = models.CharField(db_index=True, max_length=50, unique=True)
-    lastname = models.CharField(db_index=True, max_length=50, unique=True)
+    name = models.CharField(db_index=True, max_length=50)
+    lastname = models.CharField(db_index=True, max_length=50)
     is_active = models.BooleanField(default=True)
     phone = PhoneNumberField(null = True, blank = True)
     dob = models.DateField()
@@ -118,7 +118,7 @@ class Project(models.Model):
         users = ProjectUser.objects.all().filter(project=self.id).select_related()
         users_list = []
         for user in users:
-            users_list.append({'value': user.user.id, 'name': ' '.join([user.user.name, user.user.lastname])})
+            users_list.append({'value': user.user.id, 'name': ' '.join([str(user.user.id), user.user.name, user.user.lastname])})
         return users_list
 
     @property

@@ -30,7 +30,7 @@ function ProfilePassword() {
         <div className="row mb-3">
           <label htmlFor="password" className="col-md-4 col-lg-3 col-form-label">Password</label>
           <div className="col-md-8 col-lg-9">
-            <input {...register("password", {minLength: {value: 8, message: 'Password has at least 8 characters'}, required: "Password is required" })} type="password" className="form-control" />
+            <input {...register("password", {minLength: {value: 8, message: 'Password has at least 8 characters'}, maxLength: {value: 128, message: 'Max 128 characters'}, required: "Password is required" })} type="password" className="form-control" />
             <div className="text-danger">{errors.password?.message}</div>
           </div>
         </div>

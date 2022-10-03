@@ -15,6 +15,14 @@ const vemail = value => {
   }
 };
 
+const vage = value => {
+  if (new Date(value).getFullYear() > new Date().getFullYear() - 18) {
+    return (
+        "You must be 18."
+    );
+  }
+};
+
 function ProfileEdit() {
   const { register, formState: { errors }, handleSubmit } = useForm();
   const { profile, setProfile} = useContext(ProfileContext)
@@ -51,7 +59,7 @@ function ProfileEdit() {
             <div className="row mb-3">
               <label htmlFor="name" className="col-md-4 col-lg-3 col-form-label">Name</label>
               <div className="col-md-8 col-lg-9">
-                <input {...register("name", { required: "Name is required", value: profile.name })} type="text" className="form-control" />
+                <input {...register("name", { required: "Name is required", value: profile.name , pattern: {value: /^[A-ZĄĘÓŁŃŻŹĆŚa-ząęółńżźćś]+$/i, message: 'name must contain only letters'}, maxLength: {value: 50, message: 'max length 50'} })} type="text" className="form-control" />
                 <div className="text-danger">{errors.name?.message}</div>
               </div>
             </div>
@@ -59,7 +67,7 @@ function ProfileEdit() {
             <div className="row mb-3">
               <label htmlFor="lastname" className="col-md-4 col-lg-3 col-form-label">Lastname</label>
               <div className="col-md-8 col-lg-9">
-                <input {...register("lastname", { required: "Lastname is required", value: profile.lastname })} type="text" className="form-control" />
+                <input {...register("lastname", { required: "Lastname is required", value: profile.lastname, pattern: {value: /^[A-ZĄĘÓŁŃŻŹĆŚa-ząęółńżźćś]+$/i, message: 'lastname must contain only letters'}, maxLength: {value: 50, message: 'max length 50'} })} type="text" className="form-control" />
                 <div className="text-danger">{errors.lastname?.message}</div>
               </div>
             </div>
@@ -67,7 +75,7 @@ function ProfileEdit() {
             <div className="row mb-3">
               <label htmlFor="dob" className="col-md-4 col-lg-3 col-form-label">Day of birth</label>
               <div className="col-md-8 col-lg-9">
-                <input {...register("dob", { required:  "Day of birth is required", value: profile.dob})}  type="date" className="form-control"  />
+                <input {...register("dob", { required:  "Day of birth is required", value: profile.dob, validate: v=> vage(v)})}  type="date" className="form-control"  />
                 <div className="text-danger">{errors.dob?.message}</div>
               </div>
             </div>
@@ -76,7 +84,7 @@ function ProfileEdit() {
               <label htmlFor="sex" className="col-md-4 col-lg-3 col-form-label">Sex</label>
               <div className="col-md-8 col-lg-9">
                 <select {...register("sex", {value: profile.sex})} className="form-select" >
-                  <option value="FAMALE">Famale</option>
+                  <option value="FEMALE">Female</option>
                   <option value="MALE">Male</option>
                 </select>
               </div>

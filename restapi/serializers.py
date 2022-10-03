@@ -1,6 +1,5 @@
-from urllib import request
+import datetime
 from django.contrib.auth.models import update_last_login
-from django.core.exceptions import ObjectDoesNotExist
 from rest_framework import serializers
 from restapi.models import Comment, Project, ProjectUser, User
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
@@ -93,10 +92,12 @@ class RegisterSerializer(UserSerializer):
         fields = ['id', 'email', 'name', 'lastname' , 'sex', 'password', 'phone', 'dob']
 
     def create(self, validated_data):
-        try:
-            user = User.objects.get(email=validated_data['email'])
-        except ObjectDoesNotExist:
-            user = User.objects.create_user(**validated_data)
+        if User.objects.filter(email=validated_data["email"]).exists():
+            raise serializers.ValidationError("Your email is used")
+        age = (datetime.date.today() - validated_data["dob"]).days
+        if  age // 356 < 18:
+            raise serializers.ValidationError("You must be 18")
+        user = User.objects.create_user(**validated_data)
         return user
 
 

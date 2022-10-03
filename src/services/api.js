@@ -32,7 +32,7 @@ instance.interceptors.response.use(
     const refreshToken = TokenService.getLocalRefreshToken()
     if (originalConfig.url !== "/auth/login" && err.response && refreshToken) {
       // Access Token was expired
-      if (err.response.status === 401 && !originalConfig._retry) {
+      if (err.response.status === 401 && !originalConfig._retry && originalConfig.url !== "/auth/refresh/") {
         originalConfig._retry = true;
         try {
           const rs = await instance.post("/auth/refresh/", {
@@ -44,6 +44,9 @@ instance.interceptors.response.use(
         } catch (_error) {
           return Promise.reject(_error);
         }
+      } else {
+        TokenService.removeUser();
+        window.location.reload()
       }
     }
     return Promise.reject(err);
